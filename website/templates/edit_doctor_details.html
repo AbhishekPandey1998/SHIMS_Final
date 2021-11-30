@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %} Edit doctor details {% endblock %}
+
+{% block content %}
+<form method='POST'>
+    <section class="text-gray-600 body-font overflow-hidden">
+        <div class="container px-5 py-12 mx-auto">
+        <div class="flex flex-wrap -m-12">
+            <div class="p-12 md:w-1/2 flex flex-col items-start">
+                <span class="inline-block py-1 px-2 rounded bg-green-50 text-green-500 text-xs font-medium tracking-widest">EDIT DETAILS:</span>
+                <h3 class="sm:text-2xl text-2xl text-xs text-gray-900 mt-3 mb-2">*Type in the new details and leave rest empty. (Can't edit E-mail ID)</h3>
+                <label for="new_name" style="width: 100px;" class="leading-7 text-sm text-gray-600">Enter doctor ID:</label>
+                <div class="form-group">            
+                    <br>
+                    <input type="text" id="doctor_id" placeholder="Enter doctor ID" style="width: 500px;" name="doctor_id" class="w-full bg-gray-100 bg-opacity-60 rounded border border-gray-300 focus:border-green-500 focus:bg-transparent focus:ring-2 focus:ring-green-200 text-lg text-center outline-none text-gray-700 py-1 px-5 leading-8 transition-colors duration-200 ease-in-out" value="">
+                </div>
+                <br>
+
+                <label for="new_name" style="width: 100px;" class="leading-7 text-sm text-gray-600">Enter Name:</label>
+                <div class="form-group">
+                    <br>
+                    <input type="text" id="new_name" placeholder="Enter new name" style="width: 500px;" name="new_name" class="w-full bg-gray-100 bg-opacity-60 rounded border border-gray-300 focus:border-green-500 focus:bg-transparent focus:ring-2 focus:ring-green-200 text-lg text-center outline-none text-gray-700 py-1 px-5 leading-8 transition-colors duration-200 ease-in-out" value="">
+                </div>
+                <br>
+
+                <label for="new_phone" style="width: 100px;" class="leading-7 text-sm text-gray-600">Enter phone</label>
+                <div class="form-group">
+                    <br>
+                    <input type="text" id="new_phone" placeholder="Enter new phone" style="width: 500px;" name="new_phone" class="w-full bg-gray-100 bg-opacity-60 rounded border border-gray-300 focus:border-green-500 focus:bg-transparent focus:ring-2 focus:ring-green-200 text-lg text-center outline-none text-gray-700 py-1 px-5 leading-8 transition-colors duration-200 ease-in-out" value="">
+                </div>
+                <br>
+                
+                <label for="new_designation" style="width: auto;" class="leading-7 text-sm text-gray-600">Enter designation</label>
+                <div class="form-group">
+                    <br>
+                    <input type="text" id="new_designation" placeholder="Enter new designation" style="width: 500px;" name="new_designation" class="w-full bg-gray-100 bg-opacity-60 rounded border border-gray-300 focus:border-green-500 focus:bg-transparent focus:ring-2 focus:ring-green-200 text-lg text-center outline-none text-gray-700 py-1 px-5 leading-8 transition-colors duration-200 ease-in-out" value="">
+                </div>
+                <br>
+                
+                <label for="new_department" style="width: auto;" class="leading-7 text-sm text-gray-600">Enter department</label>
+                <div class="form-group">
+                    <br>
+                    <input type="text" id="new_department" placeholder="Enter new department" style="width: 500px;" name="new_department" class="w-full bg-gray-100 bg-opacity-60 rounded border border-gray-300 focus:border-green-500 focus:bg-transparent focus:ring-2 focus:ring-green-200 text-lg text-center outline-none text-gray-700 py-1 px-5 leading-8 transition-colors duration-200 ease-in-out" value="">
+                </div>
+                <br>
+                <button type="submit" class="text-white bg-dark border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Submit</button>
+            </div>
+        </div>
+        </div>
+    </section>
+</form>
+{% endblock %}

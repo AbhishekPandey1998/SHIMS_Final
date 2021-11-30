@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %} Patient Details and Reports {% endblock %}
+
+{% block content %}
+<section class="text-gray-600 body-font overflow-hidden">
+    <div class="container px-5 py-5 mx-auto">
+      <div class="lg:w-4/5 mx-auto flex flex-wrap">
+        <div class="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+          <h2 class="text-sm title-font text-gray-500 tracking-widest">Details of Doctor:</h2>
+          <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">{{doctor.name}}</h1>
+          <div class="flex mb-4">
+            <h1 class="flex-grow text-dark border-b py-2 text-lg px-1">Details</h1>
+          </div>
+          <h3 class="text-sm title-font text-black tracking-widest"><b>Health ID: </b>{{doctor.id}}</h3>
+          <h3 class="text-sm title-font text-black tracking-widest"><b>Name: </b>{{doctor.name}}</h3>
+          <h3 class="text-sm title-font text-black tracking-widest"><b>Phone: </b>{{doctor.phone}}</h3>
+          <h3 class="text-sm title-font text-black tracking-widest"><b>Email: </b>{{doctor.email}}</h3>
+          <h3 class="text-sm title-font text-black tracking-widest"><b>Designation: </b>{{doctor.designation}}</h3>
+          <h3 class="text-sm title-font text-black tracking-widest"><b>Department: </b>{{doctor.department}}</h3>
+          <br>
+          <div class="flex">
+          </div>
+          <br>
+        </div>
+      </div>
+  </section>
+{% endblock %}

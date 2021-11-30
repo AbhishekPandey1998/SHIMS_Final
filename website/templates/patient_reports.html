@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %} Patient Reports{% endblock %}
+
+{% block content %}
+<section class="text-gray-600 body-font overflow-hidden">
+    <div class="container px-5 py-5 mx-auto">
+      <div class="lg:w-4/5 mx-auto flex flex-wrap">
+        <div class="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+          <h2 class="text-sm title-font text-gray-500 tracking-widest">Details of patient:</h2>
+          <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">{{user.name}}</h1>
+          <div class="flex mb-4">
+            <h1 class="flex-grow text-dark border-b py-2 text-lg px-1">Details</h1>
+          </div>
+          <h3 class="text-sm title-font text-black tracking-widest"><b>Health ID: </b>{{user.id}}</h3>
+          <h3 class="text-sm title-font text-black tracking-widest"><b>Name: </b>{{user.name}}</h3>
+          <h3 class="text-sm title-font text-black tracking-widest"><b>Date of birth: </b>{{user.date_of_birth}}</h3>
+          <h3 class="text-sm title-font text-black tracking-widest"><b>Blood Group: </b>{{user.blood_group}}</h3>
+          <h3 class="text-sm title-font text-black tracking-widest"><b>Gender: </b>{{user.gender}}</h3>
+          <h3 class="text-sm title-font text-black tracking-widest"><b>Phone: </b>{{user.phone}}</h3>
+          <h3 class="text-sm title-font text-black tracking-widest"><b>Email: </b>{{user.email}}</h3>
+          <br>
+          <div class="flex">
+          </div>
+          <br>
+        </div>
+      </div>
+      <hr style="height:2px;color:black;background-color:gray">
+      <div class="container px-2 py-1 mx-auto">
+        <div class="lg:w-4/5 mx-auto flex flex-wrap">
+          <div class="lg:w-6/6 w-full lg:pr-5 lg:py-2 mb-2 lg:mb-0">
+            <h1 class="text-gray-900 text-2xl title-font font-medium mb-2">REPORTS</h1>
+            <hr style="height:2px;color:black;background-color:gray">
+            <div>
+              <ul class="list-group list-group-flush" id="reports">
+                {% for report in user.reports %}
+                <li class="list-group-item">
+                  <div>
+                    <div class="text-left">
+                      <b>{{report.report_id}}{{"."}}</b>
+                      {{report.type_of_report}}
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    {{"Generation Date: "}}
+                    {{report.generation_date}}
+                  </div>
+                  <div class="text-right">
+                      <button type="button" class="btn btn-primary btn-lg" onClick="downloadReport({{report.report_id}})">Download</button>
+                    {% if user.profession=='A' %}
+                      <button type="button" class="btn btn-secondary btn-lg" onClick="deleteReport({{report.report_id}})">Delete</button>
+                    {% endif %}
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <br>
+            <br>
+          </div>
+        </div>
+    </div>
+  </section>
+{% endblock %}

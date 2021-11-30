@@ -1,0 +1,7 @@
+Please download the files written below to run the server:
+
+1. flask
+
+2. Flask-SQLAlchemy
+
+3. flask-login

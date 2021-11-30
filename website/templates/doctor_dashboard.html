@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %} Doctor Dashboard {% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
+      <div class="navbar-nav">
+        {% if user.is_authenticated %}
+        <a class="nav-item nav-link" id="home" href="/">Home</a>
+        <a class="nav-item nav-link" id="dashboard" href="/doctor-dashboard">Dashboard</a>
+        <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+        {% else %}
+        <a class="nav-item nav-link" id="patient" href="/patient-landing">Patient</a>
+        <a class="nav-item nav-link" id="doctor" href="/doctor-landing">Doctor</a>
+        <a class="nav-item nav-link" id="admin" href="/admin-landing">Admin</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+{% endblock %}
+
+{% block content %}
+<section class="text-gray-600 body-font overflow-hidden">
+  <div class="container px-5 py-5 mx-auto">
+    <div class="lg:w-4/5 mx-auto flex flex-wrap">
+      <div class="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+        <h2 class="text-sm title-font text-gray-500 tracking-widest">Welcome,</h2>
+        <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">{{"Dr. "+user.name}}</h1>
+        <div class="flex mb-4">
+          <h1 class="flex-grow text-dark border-b py-2 text-lg px-1">Your Details</h1>
+        </div>
+        <h3 class="text-sm title-font text-black tracking-widest"><b>Doctor ID: </b>{{user.id}}</h3>
+        <h3 class="text-sm title-font text-black tracking-widest"><b>Name: </b>{{user.name}}</h3>
+        <h3 class="text-sm title-font text-black tracking-widest"><b>Designation: </b>{{user.designation}}</h3>
+        <h3 class="text-sm title-font text-black tracking-widest"><b>Department: </b>{{user.department}}</h3>
+        <h3 class="text-sm title-font text-black tracking-widest"><b>Phone: </b>{{user.phone[:3]+"*****"+user.phone[8:]}}</h3>
+        <h3 class="text-sm title-font text-black tracking-widest"><b>Email: </b>{{user.email}}</h3>
+        <br>
+        <div class="flex">
+          <button onclick="document.location='search-patient'" class="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded" style="margin: auto;">Search patient details and reports</button>
+        </div>
+        <br>
+        <br>
+      </div>
+      <img alt="Doctor" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="https://source.unsplash.com/1600x900/?doctor">
+    </div>
+  </div>
+</section>
+{% endblock %}
