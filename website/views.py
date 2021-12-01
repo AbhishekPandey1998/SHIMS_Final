@@ -1,12 +1,15 @@
+from typing import BinaryIO
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, send_file
 from flask.helpers import flash, url_for
 from werkzeug.utils import redirect
 from .models import User, Report
 from flask_login import login_required, current_user
-from io import BytesIO
+from io import BytesIO, StringIO
 import json
 from . import db
 from flask_login import login_required, current_user
+from werkzeug.wsgi import FileWrapper
+import os
 
 views = Blueprint('views', __name__)
 
@@ -192,11 +195,27 @@ def delete_report():
         db.session.commit()
     return jsonify({})
 
-@views.route('/download-report',methods=['POST'])
+@views.route('/download-report',methods=['GET','POST'])
 def download_report():
-    report=json.loads(request.data)
-    report_id = report['report_id']
-    report=Report.query.get(report_id)
-    if report:
-        return send_file(BytesIO(report.file), attachment_filename=report.type_of_report+"_"+str(report.patient_id)+".pdf" , as_attachment=True)
-    return jsonify({})
+    if request.method=='POST':
+        # report=Report.query.filter_by(report_id = 8).first()
+        # return send_file(BytesIO(report.file), download_name=report.type_of_report+"_"+str(report.patient_id)+".pdf" , as_attachment=True)
+        k=request.data
+        x=k.decode('utf-8')
+        m=x[13:]
+        n=m[:-1]
+        print("Value of n: ", n)
+        if n:
+            int_n = int(n)
+            report=Report.query.filter_by(report_id = int_n).first()
+            flash('Report '+report.type_of_report+"_"+str(report.patient_id)+".pdf"+' is downloading','success')
+            print("Report ID: ", report.report_id)
+            print("Report type: ", report.type_of_report)
+            print("Report patient id: ", report.patient_id)
+            print("Report generation date: ", report.generation_date)
+            print("Download name: ", report.type_of_report+"_"+str(report.patient_id)+".pdf")
+            return send_file(BytesIO(report.file), download_name=report.type_of_report+"_"+str(report.patient_id)+".pdf" , as_attachment=True)
+        else:
+            return render_template('patient_reports.html', user=current_user)
+    else:
+        return render_template('patient_reports.html', user=current_user)
