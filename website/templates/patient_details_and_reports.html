@@ -44,12 +44,28 @@
                     {{"Generation Date: "}}
                     {{report.generation_date}}
                   </div>
+
                   <div class="text-right">
-                      <button type="button" class="btn btn-primary btn-lg" onClick="downloadReport({{report.report_id}})">Download</button>
+                    <a href="/download-report/{{patient.id}}/{{report.report_id}}">
+                      <button type="button" class="btn btn-primary btn-lg">Download</button>
+                    </a>
                     {% if user.profession=='A' %}
-                      <button type="button" class="btn btn-secondary btn-lg" onClick="deleteReport({{report.report_id}})">Delete</button>
-                    {% endif %}
+                    <a href="/delete-report/{{patient.id}}/{{report.report_id}}">
+                      <button type="button" class="btn btn-secondary btn-lg">Delete</button>
+                    </a>
+                      
+                    {% endif %}                  
                   </div>
+
+
+
+
+                  <!-- <div class="text-right">
+                      <button type="button" class="btn btn-primary btn-lg" onClick="downloadReport({{report.report_id}},{{patient.id}})">Download</button>
+                    {% if user.profession=='A' %}
+                      <button type="button" class="btn btn-secondary btn-lg" onClick="deleteReport({{report.report_id}},{{patient.id}})">Delete</button>
+                    {% endif %}
+                  </div> -->
                 </li>
                 {% endfor %}
               </ul>

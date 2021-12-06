@@ -1,6 +1,8 @@
+import re
 from typing import BinaryIO
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, send_file
 from flask.helpers import flash, url_for
+from sqlalchemy.sql.expression import null
 from werkzeug.utils import redirect
 from .models import User, Report
 from flask_login import login_required, current_user
@@ -42,10 +44,23 @@ def patient_dashboard():
 @login_required
 def patient_reports():
     if(current_user.profession=="P"):
-        return render_template("patient_reports.html", user=current_user)
+        return render_template("patient_details_and_reports.html", user=current_user, patient= current_user)        
     else:
         flash("You can't access the page without authorization !!!", 'error')
         return render_template("home.html", user=current_user)
+
+
+@views.route('/patient-details-and-reports/<int:patient_id>')
+@login_required
+def patient_details_and_reports(patient_id):
+    patient = User.query.filter_by(id = patient_id).first()
+    if(current_user.profession=="D" or current_user.profession=="A" or current_user.profession=="P"):
+        return render_template("patient_details_and_reports.html", user=current_user, patient= patient)
+    else:
+        flash("You can't access the page without authorization !!!", 'error')
+        return render_template("home.html", user=current_user)
+
+
     
 @views.route('/doctor-dashboard')
 @login_required
@@ -56,14 +71,7 @@ def doctor_dashboard():
         flash("You can't access the page without authorization !!!", 'error')
         return render_template("home.html", user=current_user)
 
-@views.route('/patient-details-and-reports')
-@login_required
-def patient_details_and_reports():
-    if(current_user.profession=="D" or current_user.profession=="A" or current_user.profession=="P"):
-        return render_template("patient_details_and_reports.html", user=current_user)
-    else:
-        flash("You can't access the page without authorization !!!", 'error')
-        return render_template("home.html", user=current_user)
+
     
 @views.route('/admin-dashboard')
 @login_required
@@ -145,9 +153,7 @@ def add_doctor():
 def search_patient():
     if request.method=='POST':
         search_health_id= request.form.get("search_health_id")
-        
         patient = User.query.filter_by(id=search_health_id).first()
-
         if (patient and patient.profession=='P'):
             return render_template("patient_details_and_reports.html", user=current_user, patient=patient)
         else:
@@ -184,38 +190,29 @@ def upload_patient_reports():
         flash("You can't access the page without authorization !!!", 'error')
         return render_template("home.html", user=current_user)
 
-@views.route('/delete-report', methods=['POST'])
-def delete_report():
-    report=json.loads(request.data)
-    report_id = report['report_id']
+@views.route('/delete-report/<int:patient_id>/<int:report_id>', methods=['GET','POST'])
+def delete_report(patient_id, report_id):
     report=Report.query.get(report_id)
+    patient = User.query.get(patient_id)
     if report and current_user.profession=='A':
         flash('Report deleted !!!','success')
         db.session.delete(report)
         db.session.commit()
-    return jsonify({})
+    else:
+        return render_template("patient_details_and_reports.html", user=current_user, patient = patient)
+    return render_template("patient_details_and_reports.html", user=current_user, patient = patient)
 
-@views.route('/download-report',methods=['GET','POST'])
-def download_report():
-    if request.method=='POST':
-        # report=Report.query.filter_by(report_id = 8).first()
-        # return send_file(BytesIO(report.file), download_name=report.type_of_report+"_"+str(report.patient_id)+".pdf" , as_attachment=True)
-        k=request.data
-        x=k.decode('utf-8')
-        m=x[13:]
-        n=m[:-1]
-        print("Value of n: ", n)
-        if n:
-            int_n = int(n)
-            report=Report.query.filter_by(report_id = int_n).first()
-            flash('Report '+report.type_of_report+"_"+str(report.patient_id)+".pdf"+' is downloading','success')
-            print("Report ID: ", report.report_id)
-            print("Report type: ", report.type_of_report)
-            print("Report patient id: ", report.patient_id)
-            print("Report generation date: ", report.generation_date)
-            print("Download name: ", report.type_of_report+"_"+str(report.patient_id)+".pdf")
+
+@views.route('/download-report/<int:patient_id>/<int:report_id>',methods=['GET','POST'])
+def download_report(report_id, patient_id):
+    if current_user.is_authenticated and (current_user.id==patient_id or current_user.profession=='A' or current_user.profession=='D'):
+        if request.method=='GET':
+            report=Report.query.get(report_id)
+            patient = User.query.get(patient_id)
             return send_file(BytesIO(report.file), download_name=report.type_of_report+"_"+str(report.patient_id)+".pdf" , as_attachment=True)
         else:
-            return render_template('patient_reports.html', user=current_user)
+            patient = User.query.filter_by(id=patient_id).first()
+        return render_template('patient_details_and_reports.html', user=current_user, patient=patient)
     else:
-        return render_template('patient_reports.html', user=current_user)
+        flash('Access Denied !!!','error')
+        return redirect(url_for("views.home"))
